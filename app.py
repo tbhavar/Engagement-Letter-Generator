@@ -464,9 +464,10 @@ def generate_letter(template, variables):
         return None
 
 def generate_pdf(letter_content, client_name):
-    """Generate PDF from letter content using fpdf2"""
+    """Generate professional PDF from letter content using fpdf2"""
     try:
         from fpdf import FPDF
+        import re
 
         # Sanitize text for PDF compatibility
         def sanitize_text(text):
@@ -486,53 +487,98 @@ def generate_pdf(letter_content, client_name):
                 text = text.replace(special, ascii_char)
             return text
 
-        # Create PDF with proper margins
+        def clean_markdown(text):
+            """Remove markdown formatting but keep content"""
+            # Remove ** bold markers
+            text = re.sub(r'\*\*(.*?)\*\*', r'\1', text)
+            # Remove * italic markers
+            text = re.sub(r'\*(.*?)\*', r'\1', text)
+            # Remove __ and _ underline
+            text = re.sub(r'__(.*?)__', r'\1', text)
+            text = re.sub(r'_(.*?)_', r'\1', text)
+            return text
+
+        # Create PDF with professional styling
         pdf = FPDF(format='A4')
-        pdf.set_margins(15, 15, 15)
+        pdf.set_margins(18, 18, 18)
         pdf.add_page()
-        pdf.set_font("helvetica", size=11)
 
-        # Add content line by line
-        for line in letter_content.split('\n'):
-            line = line.rstrip()
+        # Define colors
+        header_color = (26, 58, 82)  # Navy
+        text_color = (51, 51, 51)    # Dark gray
 
-            # Handle headings (lines with ##)
-            if line.startswith('## '):
-                pdf.ln(4)
-                pdf.set_font("helvetica", "B", 13)
-                heading = sanitize_text(line.replace('## ', '').strip())
-                # Use multi_cell for safe text wrapping
-                pdf.multi_cell(0, 7, heading)
-                pdf.set_font("helvetica", size=11)
+        # Process content
+        lines = letter_content.split('\n')
+        i = 0
+        while i < len(lines):
+            line = lines[i].rstrip()
+            i += 1
+
+            # Skip empty lines (add spacing)
+            if line.strip() == '':
                 pdf.ln(2)
+                continue
 
+            # Handle main headings (##)
+            elif line.startswith('## '):
+                pdf.ln(3)
+                pdf.set_text_color(*header_color)
+                pdf.set_font("helvetica", "B", 14)
+                heading = clean_markdown(sanitize_text(line.replace('## ', '').strip()))
+                pdf.multi_cell(0, 8, heading, align='L')
+                pdf.set_text_color(*text_color)
+                pdf.ln(1)
+
+            # Handle subheadings (###)
             elif line.startswith('### '):
                 pdf.ln(2)
                 pdf.set_font("helvetica", "B", 12)
-                subheading = sanitize_text(line.replace('### ', '').strip())
-                pdf.multi_cell(0, 6, subheading)
-                pdf.set_font("helvetica", size=11)
-                pdf.ln(1)
+                pdf.set_text_color(*header_color)
+                subheading = clean_markdown(sanitize_text(line.replace('### ', '').strip()))
+                pdf.multi_cell(0, 7, subheading, align='L')
+                pdf.set_text_color(*text_color)
+                pdf.ln(0.5)
 
-            elif line.startswith('**') and line.endswith('**'):
-                pdf.set_font("helvetica", "B", 11)
-                text = sanitize_text(line.replace('**', '').strip())
-                pdf.multi_cell(0, 6, text)
-                pdf.set_font("helvetica", size=11)
-                pdf.ln(1)
-
+            # Handle separators
             elif line.strip() == '---':
-                pdf.ln(3)
-
-            elif line.strip() == '':
                 pdf.ln(2)
+                continue
 
-            else:
-                # Regular text - safely wrap long lines
-                text = sanitize_text(line.strip())
+            # Handle bullet points
+            elif line.strip().startswith('- '):
+                pdf.set_font("helvetica", size=11)
+                text = clean_markdown(sanitize_text(line.replace('- ', '').strip()))
+                pdf.multi_cell(0, 6, '  • ' + text, align='L')
+
+            # Handle table separators (|)
+            elif '|' in line:
+                # Skip table formatting lines
+                if line.strip().replace('|', '').replace('-', '').replace(' ', '') == '':
+                    continue
+                # Skip table header formatting
+                if '---' in line:
+                    continue
+                # Regular table cell content
+                text = line.replace('|', ' ').strip()
                 if text:
-                    pdf.multi_cell(0, 6, text)
-                    pdf.ln(0.5)
+                    pdf.set_font("helvetica", size=10)
+                    pdf.multi_cell(0, 6, clean_markdown(sanitize_text(text)), align='L')
+
+            # Handle regular text
+            else:
+                clean_text = clean_markdown(sanitize_text(line.strip()))
+                if clean_text:
+                    # Check if line is bold (common pattern)
+                    if line.startswith('**') or 'Name:' in line or 'Date:' in line or 'Signature:' in line:
+                        pdf.set_font("helvetica", "B", 11)
+                    else:
+                        pdf.set_font("helvetica", size=11)
+
+                    pdf.multi_cell(0, 6, clean_text, align='L')
+
+        # Reset formatting
+        pdf.set_text_color(51, 51, 51)
+        pdf.set_font("helvetica", size=11)
 
         # Return PDF as bytes
         pdf_output = pdf.output(dest='S')
