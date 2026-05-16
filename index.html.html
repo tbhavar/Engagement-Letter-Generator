@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe-Coding Workshop - AICA Level 2 Trainer's Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* CA Professional Color Scheme */
+        :root {
+            --ca-navy: #1a3a52;
+            --ca-gold: #B8860B;
+            --ca-dark: #2c3e50;
+            --ca-light-blue: #e8f0f7;
+            --ca-text: #1a1a1a;
+            --ca-border: #ddd;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: var(--ca-text);
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(26, 58, 82, 0.15);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--ca-navy) 0%, #2c5aa0 100%);
+            color: white;
+            padding: 50px 40px;
+            text-align: center;
+            border-bottom: 5px solid var(--ca-gold);
+        }
+
+        header h1 {
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+            margin: 8px 0;
+            color: white;
+        }
+
+        header .subtitle {
+            font-size: 1em;
+            margin-top: 15px;
+            opacity: 0.9;
+            border-top: 2px solid rgba(255, 255, 255, 0.5);
+            padding-top: 12px;
+        }
+
+        .content {
+            padding: 50px;
+        }
+
+        h2 {
+            color: var(--ca-navy);
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid var(--ca-gold);
+            font-size: 1.8em;
+            font-weight: 600;
+        }
+
+        h2:first-of-type {
+            margin-top: 0;
+        }
+
+        h3 {
+            color: #2c5aa0;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        h4 {
+            color: var(--ca-navy);
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+            color: #333;
+        }
+
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            line-height: 1.7;
+        }
+
+        .highlight {
+            background-color: var(--ca-light-blue);
+            padding: 20px;
+            border-left: 5px solid var(--ca-navy);
+            margin: 20px 0;
+            border-radius: 5px;
+            line-height: 1.8;
+        }
+
+        .prompt-box {
+            background-color: #f9f3e6;
+            padding: 25px;
+            border-left: 5px solid var(--ca-gold);
+            margin: 20px 0;
+            border-radius: 5px;
+            line-height: 1.8;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            color: #333;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .prompt-box strong {
+            color: var(--ca-navy);
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 1em;
+        }
+
+        .code-block {
+            background: var(--ca-dark);
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.6;
+            border-left: 4px solid var(--ca-gold);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(26, 58, 82, 0.1);
+        }
+
+        th {
+            background-color: var(--ca-navy);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 3px solid var(--ca-gold);
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--ca-border);
+        }
+
+        tr:hover {
+            background-color: var(--ca-light-blue);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .timeline {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .timeline-item {
+            background: linear-gradient(135deg, var(--ca-navy) 0%, #2c5aa0 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(26, 58, 82, 0.2);
+        }
+
+        .timeline-item h4 {
+            color: var(--ca-gold);
+            font-size: 1.2em;
+            margin-bottom: 8px;
+        }
+
+        .timeline-item p {
+            color: white;
+            margin: 0;
+            font-size: 0.95em;
+        }
+
+        .checklist {
+            list-style: none;
+            padding: 0;
+            margin-left: 0;
+        }
+
+        .checklist li {
+            padding: 10px 0;
+            padding-left: 35px;
+            position: relative;
+            margin-bottom: 8px;
+        }
+
+        .checklist li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--ca-gold);
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+
+        .metric-box {
+            display: inline-block;
+            background: var(--ca-light-blue);
+            padding: 15px 25px;
+            margin: 10px 5px;
+            border-radius: 5px;
+            border-left: 4px solid var(--ca-gold);
+            font-weight: 600;
+            color: var(--ca-navy);
+        }
+
+        footer {
+            background: var(--ca-navy);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            font-size: 0.9em;
+            border-top: 5px solid var(--ca-gold);
+        }
+
+        footer p {
+            margin: 8px 0;
+            color: white;
+        }
+
+        .toc {
+            background: var(--ca-light-blue);
+            padding: 25px;
+            border-radius: 5px;
+            margin: 25px 0;
+            border-left: 5px solid var(--ca-gold);
+        }
+
+        .toc h3 {
+            color: var(--ca-navy);
+            margin-top: 0;
+            font-size: 1.2em;
+        }
+
+        .toc ol {
+            margin-left: 20px;
+        }
+
+        .toc li {
+            margin-bottom: 8px;
+            line-height: 1.7;
+        }
+
+        .success {
+            background-color: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 18px;
+            margin: 20px 0;
+            border-radius: 5px;
+            color: #155724;
+            line-height: 1.7;
+        }
+
+        .warning {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 18px;
+            margin: 20px 0;
+            border-radius: 5px;
+            color: #856404;
+            line-height: 1.7;
+        }
+
+        .phase-box {
+            background: linear-gradient(135deg, rgba(26, 58, 82, 0.05) 0%, rgba(44, 90, 160, 0.05) 100%);
+            padding: 20px;
+            border-left: 5px solid #2c5aa0;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .timeline {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            header {
+                padding: 30px 20px;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 25px;
+            }
+
+            h2 {
+                font-size: 1.4em;
+            }
+
+            h3 {
+                font-size: 1.1em;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .container {
+                box-shadow: none;
+                max-width: 100%;
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>☁️ Vibe-Code Workshop</h1>
+            <p>Engagement Letter Generator</p>
+            <div class="subtitle">
+                <strong>AICA Level 2 Trainer's Guide</strong><br>
+                Teach Participants to Command AI & Build Production Web Apps
+            </div>
+            <p style="margin-top: 20px; opacity: 0.85; font-size: 0.95em; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 15px;">
+                Content Developed by: <strong>CA Tanmay R. Bhavar</strong> (Faculty, AICA Certificate Course)
+            </p>
+        </header>
+
+        <div class="content">
+            <!-- Table of Contents -->
+            <div class="toc">
+                <h3>📑 Workshop Overview</h3>
+                <ol>
+                    <li><a href="#setup">Pre-Workshop Setup</a></li>
+                    <li><a href="#demo">Live Demo & Reference Repos</a></li>
+                    <li><a href="#phase1">Phase 1: Generate App with Claude</a></li>
+                    <li><a href="#phase2">Phase 2: Create GitHub Repo</a></li>
+                    <li><a href="#phase3">Phase 3: Deploy to Streamlit Cloud</a></li>
+                    <li><a href="#antigravity">Bonus: Antigravity IDE Agentic Workflow</a></li>
+                    <li><a href="#enhancements">Bonus Prompts & Enhancements</a></li>
+                    <li><a href="#tips">Trainer Tips & Philosophy</a></li>
+                    <li><a href="#troubleshoot">Troubleshooting</a></li>
+                </ol>
+            </div>
+
+            <!-- Setup -->
+            <h2 id="setup">📋 Pre-Workshop Setup (For Participants)</h2>
+            <p>Participants need these in 2 minutes before workshop starts:</p>
+
+            <ul class="checklist">
+                <li><strong>GitHub Account</strong> - Free at github.com</li>
+                <li><strong>Claude.ai Account</strong> - Free access for AI-powered code generation</li>
+                <li><strong>Any Browser</strong> - Chrome, Firefox, Safari</li>
+                <li><strong>Text Editor</strong> - VS Code or Notepad++</li>
+            </ul>
+
+            <div class="success">
+                ✅ That's it! No Python installation, no local server setup, no complexity.
+            </div>
+
+            <div class="warning">
+                <strong>⚠️ Important Limitations:</strong>
+                <ul style="margin: 10px 0; margin-left: 20px;">
+                    <li><strong>Streamlit Cloud (Community):</strong> Only 1 private app per workspace. Use public repos or upgrade to paid tier for multiple private deployments.</li>
+                    <li><strong>GitHub Free:</strong> Unlimited public/private repos but limited to 3GB storage for LFS files.</li>
+                    <li><strong>Streamlit Cloud Free Tier:</strong> 1 GB RAM, 1 vCPU. Sufficient for small-medium CA firms.</li>
+                </ul>
+            </div>
+
+            <!-- Live Demo & Reference -->
+            <h2 id="demo" style="color: var(--ca-navy); margin-top: 40px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 3px solid var(--ca-gold);">🔗 Live Demo & Reference Repos</h2>
+
+            <div class="highlight">
+                <strong>Try the live app:</strong> <a href="https://engagement-letter-aical2.streamlit.app/" target="_blank" style="color: #2c5aa0; font-weight: 600;">https://engagement-letter-aical2.streamlit.app/</a>
+                <br><br>
+                <strong>View public repository:</strong> <a href="https://github.com/tbhavar/Engagement-Letter-Generator" target="_blank" style="color: #2c5aa0; font-weight: 600;">https://github.com/tbhavar/Engagement-Letter-Generator</a>
+                <br><br>
+                <em>Participants can fork this repo, make it private, and customize for their firm.</em>
+            </div>
+
+            <!-- Phase 1 -->
+            <h2 id="phase1">🎯 PHASE 1: Command Claude to Generate App (30 minutes)</h2>
+
+            <p>Have participants paste this exact prompt into Claude.ai:</p>
+
+            <div class="prompt-box"><strong>PROMPT FOR CLAUDE:</strong>
+
+Write a complete Streamlit web app that generates engagement letters for CA firms.
+
+Requirements:
+1. Login system with password "CA2026"
+2. User inputs: Client name, Firm name, Service type (dropdown: Full Audit, Limited Review, Income Tax, GST, Company Formation), Fee amount
+3. Generate professional engagement letter using Jinja2 templating
+4. Show live preview before saving
+5. Download as text file button
+6. Help tab with FAQs
+
+Constraints:
+- Use ONLY Streamlit and Jinja2 (no complex dependencies)
+- Include proper error handling
+- Add comments for CAs with zero coding knowledge
+- Make login case-insensitive
+- Professional styling with gradient header
+- 5 service types with auto-populated standards
+
+Output: Complete, runnable app.py file ready to deploy</div>
+
+            <p><strong>Expected Result:</strong> Claude generates ~1000 lines of clean Python code</p>
+
+            <h3>Trainer Demo (Show This Live):</h3>
+            <div class="code-block">pip install streamlit jinja2
+streamlit run app.py</div>
+
+            <p>App opens in browser. Participants see it's working!</p>
+
+            <!-- Phase 2 -->
+            <h2 id="phase2">📝 PHASE 2: Create GitHub Repository (15 minutes)</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 10%;">#</th>
+                        <th style="width: 90%;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Go to github.com → Create new <strong>PRIVATE</strong> repo named "engagement-letters"</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Copy Claude-generated code → Create file <strong>"app.py"</strong></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Create file <strong>"requirements.txt"</strong> with content: <code>streamlit</code> and <code>jinja2</code></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Create file <strong>"README.md"</strong> with quick start instructions</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Create file <strong>".gitignore"</strong> to exclude <code>__pycache__</code></td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>Commit all files with message: "Initial engagement letter app"</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Phase 3 -->
+            <h2 id="phase3">🚀 PHASE 3: Deploy to Streamlit Cloud (20 minutes)</h2>
+
+            <div class="phase-box">
+                <h3 style="margin-top: 0;">Step-by-Step Deployment:</h3>
+
+                <ol>
+                    <li><strong>Sign up</strong> at share.streamlit.io (free tier)</li>
+                    <li><strong>Click "New app"</strong> → Select GitHub repo "engagement-letters"</li>
+                    <li><strong>Set Main file</strong> to "app.py"</li>
+                    <li><strong>Click Deploy</strong> → Get live link in 2-3 minutes</li>
+                    <li><strong>Share link</strong> with participants: <code>https://share.streamlit.io/[username]/engagement-letters/app</code></li>
+                </ol>
+
+                <div class="success" style="margin-top: 20px;">
+                    ✅ <strong>RESULT:</strong> Live web app accessible from anywhere on any device!
+                </div>
+            </div>
+
+            <!-- Timeline -->
+            <h3>Workshop Timeline:</h3>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h4>Setup</h4>
+                    <p>5 min<br>Accounts ready</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>Phase 1</h4>
+                    <p>30 min<br>Claude writes code</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>Phase 2</h4>
+                    <p>15 min<br>GitHub setup</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>Phase 3</h4>
+                    <p>20 min<br>Cloud deploy</p>
+                </div>
+            </div>
+
+            <p style="text-align: center; margin-top: 20px;"><strong>Total: 80 minutes from zero to production web app</strong></p>
+
+            <!-- Antigravity IDE Bonus Guide -->
+            <h2 id="antigravity">🤖 BONUS: Antigravity IDE Agentic Workflow (Advanced)</h2>
+
+            <p><strong>For participants wanting to master the entire development cycle in one IDE:</strong> Use Antigravity IDE to vibe-code, version-control, and deploy—all from one interface.</p>
+
+            <h3>Prerequisites (5 minutes):</h3>
+            <ul class="checklist">
+                <li>Git installed on your machine</li>
+                <li>GitHub extension installed in Antigravity IDE</li>
+                <li>GitHub Personal Access Token (PAT) configured in Antigravity IDE</li>
+                <li>Private GitHub repository created (from Phase 2)</li>
+            </ul>
+
+            <h3>Step 1: Initial Vibe-Coding Prompt (Creates Full Project)</h3>
+            <div class="prompt-box"><strong>PASTE THIS INTO ANTIGRAVITY IDE:</strong>
+
+Create a complete Engagement Letter Generator project with this exact structure:
+
+PROJECT STRUCTURE:
+engagement-letters/
+├── app.py (Main Streamlit app)
+├── requirements.txt (streamlit, jinja2)
+├── .gitignore (exclude __pycache__, .streamlit/secrets.toml)
+├── .streamlit/
+│   └── config.toml (professional styling)
+├── templates/
+│   └── master_engagement_letter.md (Jinja2 template with 25+ variables)
+├── clients/ (folder for saved letters)
+└── README.md (setup instructions)
+
+REQUIREMENTS:
+1. Login: password "CA2026" (case-insensitive)
+2. Inputs: Client name, Firm name, Service type (Full Audit, Limited Review, Income Tax, GST, Company Formation), Fee amount
+3. Template engine: Jinja2 for dynamic content
+4. Features: Live preview, Download as text, Help tab with FAQs
+5. Styling: Professional gradient header (navy to blue), gold accents
+6. Dependencies: ONLY Streamlit and Jinja2 (no complex libraries)
+
+OUTPUT: Complete project ready to push to GitHub and deploy to Streamlit Cloud</div>
+
+            <h3>Step 2: Push to GitHub (Vibe-Code the Git Commands)</h3>
+            <div class="prompt-box"><strong>FOLLOW-UP PROMPT:</strong>
+
+Generate git commands and shell script to:
+1. Initialize local git repo in engagement-letters/
+2. Add all files with .gitignore protecting secrets
+3. Create first commit: "Initial engagement letter app"
+4. Add remote origin to my private GitHub repo
+5. Push main branch to GitHub
+
+Return ready-to-run bash commands</div>
+
+            <h3>Step 3: Test Locally & Validate (Optional)</h3>
+            <div class="prompt-box"><strong>OPTIONAL PROMPT:</strong>
+
+Provide commands to:
+1. Install dependencies from requirements.txt
+2. Run streamlit app locally: streamlit run app.py
+3. Test login with password "CA2026"
+4. Generate sample engagement letter with test data
+5. Verify all 5 service types work correctly</div>
+
+            <h3>Step 4: Feature Enhancement (Real Agentic Workflow)</h3>
+            <div class="prompt-box"><strong>ENHANCEMENT PROMPT:</strong>
+
+Modify app.py to add:
+1. "Save to GitHub" button using PyGithub
+2. Save approved letters to clients/ folder with timestamp
+3. "View All Letters" tab showing past generated letters from GitHub
+4. Metrics: total letters generated, average fee
+
+Update requirements.txt to include PyGithub.
+Provide complete modified code ready to test</div>
+
+            <h3>Step 5: Sync Changes Back to GitHub</h3>
+            <div class="prompt-box"><strong>FINAL PROMPT:</strong>
+
+Generate git commands to:
+1. Stage all modified/new files
+2. Create commit: "Add GitHub integration and letter history"
+3. Push to GitHub main branch
+4. Verify commit appears on GitHub (check remote URL)
+
+Provide ready-to-run bash commands</div>
+
+            <div class="success" style="margin-top: 20px;">
+                ✅ <strong>Result:</strong> You've now experienced the full agentic workflow—vibe-coding the entire project, pushing to version control, testing, iterating features, and keeping GitHub in sync—all without writing a single git command manually.
+            </div>
+
+            <!-- Enhancements -->
+            <h2 id="enhancements">💡 Bonus Prompts for Enhancements</h2>
+
+            <h3>Feature 1: Add GitHub Integration</h3>
+            <div class="prompt-box"><strong>PROMPT:</strong>
+
+Modify the Streamlit app to:
+1. Add a "Save to GitHub" button (requires PyGithub)
+2. Save approved letters to clients/ folder in GitHub
+3. Store letter metadata as JSON file
+4. Create "All Letters" tab to view past letters from GitHub
+5. Require GitHub token in Streamlit secrets
+6. Show metrics: total letters, total fees
+
+Use st.secrets to read github_token and repo_name</div>
+
+            <h3>Feature 2: Add Dashboard Analytics</h3>
+            <div class="prompt-box"><strong>PROMPT:</strong>
+
+Add a new "Dashboard" tab that displays:
+1. Total letters generated (metric card)
+2. Average fee amount (metric card)
+3. Letters by service type (bar chart)
+4. Letters by creator (pie chart)
+5. Last 10 letters table
+
+Use Streamlit st.metric() and st.bar_chart()</div>
+
+            <h3>Feature 3: Email Notifications</h3>
+            <div class="prompt-box"><strong>PROMPT:</strong>
+
+Add "Email Template" button that:
+1. Generates email body with letter summary
+2. Shows preview in expandable section
+3. Copy-to-clipboard functionality
+4. Pre-fills recipient email field</div>
+
+            <!-- Trainer Tips -->
+            <h2 id="tips">👨‍🏫 Trainer Tips & Teaching Philosophy</h2>
+
+            <h3>Key Messages for Participants:</h3>
+
+            <ul class="checklist">
+                <li><strong>This is NOT "Learn Python"</strong> — it's "Learn to Command AI"</li>
+                <li><strong>You don't write code</strong> — you guide an AI that writes code</li>
+                <li><strong>English, not syntax</strong> — describe what you want in plain English</li>
+                <li><strong>This is real business skill</strong> — used today in top firms</li>
+                <li><strong>Zero infrastructure cost</strong> — Streamlit Cloud free tier + GitHub free</li>
+            </ul>
+
+            <h3>How to Teach It:</h3>
+
+            <div class="highlight">
+                <strong>✅ Show, don't tell:</strong> Live demo Claude generating code in real-time (2 minutes)
+            </div>
+
+            <div class="highlight">
+                <strong>✅ Emphasize the "vibe":</strong> "You speak English. AI writes Python. You guide. Done."
+            </div>
+
+            <div class="highlight">
+                <strong>✅ Test together:</strong> Generate, deploy, test the live web app as a group (show it works!)
+            </div>
+
+            <div class="highlight">
+                <strong>✅ Iterate with Claude:</strong> Ask "Add a feature" or "Fix this bug" and regenerate (5 minutes)
+            </div>
+
+            <div class="highlight">
+                <strong>✅ Measure impact:</strong> "15 minutes → 3 minutes per letter = 80% time savings"
+            </div>
+
+            <div class="highlight">
+                <strong>✅ Business focus:</strong> This is agentic workflows for CA firms, not a coding course
+            </div>
+
+            <!-- Troubleshooting -->
+            <h2 id="troubleshoot">🔧 Troubleshooting</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 30%;">Issue</th>
+                        <th style="width: 70%;">Fix</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Import Error</strong></td>
+                        <td>Ask Claude: "Fix import errors and add missing libraries to requirements.txt"</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Deployment Fails</strong></td>
+                        <td>Check: requirements.txt exists, repo is PRIVATE, GitHub is connected</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Code Not Working</strong></td>
+                        <td>Share error message with Claude: "Debug this error: [error text]"</td>
+                    </tr>
+                    <tr>
+                        <td><strong>App Too Slow</strong></td>
+                        <td>Ask Claude: "Optimize performance using st.cache_resource"</td>
+                    </tr>
+                    <tr>
+                        <td><strong>GitHub Integration Failing</strong></td>
+                        <td>Verify GitHub token is in Streamlit Cloud secrets (Settings → Secrets)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Can't Access Streamlit Link</strong></td>
+                        <td>Check: repo is public, app is deployed (check Streamlit Cloud dashboard)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Success Metrics -->
+            <h2>📊 Success Metrics</h2>
+
+            <p>By end of workshop, participants should achieve:</p>
+
+            <ul class="checklist">
+                <li>Generate engagement letter in <strong>2-3 minutes</strong> (vs. 15 minutes manual)</li>
+                <li>Deploy <strong>functional web app to internet</strong> (live link)</li>
+                <li>Understand how to <strong>command AI for software development</strong></li>
+                <li>Know how to <strong>iterate & improve</strong> code with Claude</li>
+                <li>Ready to build <strong>other CA tools</strong> using vibe-coding approach</li>
+            </ul>
+
+            <!-- Key Stats -->
+            <h3>Impact Metrics to Share:</h3>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <div class="metric-box">⏱️ 80% Time Savings</div>
+                <div class="metric-box">📊 20x Faster Bulk Ops</div>
+                <div class="metric-box">🌐 Remote Accessible</div>
+                <div class="metric-box">💰 Zero Cost</div>
+            </div>
+
+        </div>
+
+        <footer>
+            <p><strong>☁️ Vibe-Code Workshop - AICA Level 2</strong></p>
+            <p>Transform Chartered Accountants into Agentic Software Builders</p>
+            <p style="margin-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.3); padding-top: 15px;">
+                © 2026 Institute of Chartered Accountants of India (ICAI). All rights reserved.
+            </p>
+            <p style="margin-top: 12px; font-size: 0.85em; opacity: 0.9;">
+                Duration: 80 minutes | Participants: 1-50 | Prerequisites: GitHub + Claude.ai account
+            </p>
+            <p style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.3); font-size: 0.85em; opacity: 0.85;">
+                Content Developed by: <strong>CA Tanmay R. Bhavar</strong> (Faculty, AICA Certificate Course)
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
