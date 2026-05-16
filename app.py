@@ -535,7 +535,7 @@ def generate_pdf(letter_content, client_name):
                     pdf.ln(0.5)
 
         # Return PDF as bytes
-        return pdf.output(dest='S').encode('latin-1')
+        return pdf.output(dest='S')
 
     except Exception as e:
         st.error(f"❌ Error generating PDF: {str(e)}")
