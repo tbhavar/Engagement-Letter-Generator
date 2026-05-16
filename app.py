@@ -14,6 +14,7 @@ import json
 from pathlib import Path
 import base64
 import os
+from io import BytesIO
 
 # ============================================================================
 # PAGE CONFIGURATION
@@ -462,6 +463,47 @@ def generate_letter(template, variables):
         st.error(f"❌ Error: {str(e)}")
         return None
 
+def generate_pdf(letter_content, client_name):
+    """Generate PDF from letter content using fpdf2"""
+    try:
+        from fpdf import FPDF
+
+        # Create PDF
+        pdf = FPDF()
+        pdf.add_page()
+
+        # Set font
+        pdf.set_font("Arial", size=10)
+
+        # Add content line by line
+        for line in letter_content.split('\n'):
+            # Handle headings (lines with #)
+            if line.startswith('## '):
+                pdf.set_font("Arial", "B", 12)
+                pdf.cell(0, 8, line.replace('## ', ''), ln=True)
+                pdf.set_font("Arial", size=10)
+            elif line.startswith('### '):
+                pdf.set_font("Arial", "B", 11)
+                pdf.cell(0, 7, line.replace('### ', ''), ln=True)
+                pdf.set_font("Arial", size=10)
+            elif line.startswith('**') and line.endswith('**'):
+                pdf.set_font("Arial", "B", 10)
+                pdf.multi_cell(0, 5, line.replace('**', ''))
+                pdf.set_font("Arial", size=10)
+            elif line.strip() == '---':
+                pdf.ln(2)
+            elif line.strip() != '':
+                pdf.multi_cell(0, 5, line.strip())
+            else:
+                pdf.ln(2)
+
+        # Return PDF as bytes
+        return pdf.output(dest='S').encode('latin-1')
+
+    except Exception as e:
+        st.error(f"❌ Error generating PDF: {str(e)}")
+        return None
+
 # ============================================================================
 # MAIN APP
 # ============================================================================
@@ -595,13 +637,13 @@ def main_app():
                     st.session_state.current_client = client_name
 
                     st.markdown("---")
-                    st.markdown("### 💾 Save to Cloud")
+                    st.markdown("### 💾 Download & Save to Cloud")
 
-                    col1, col2 = st.columns([1, 1])
+                    col1, col2, col3 = st.columns([1, 1, 1])
 
                     with col1:
                         st.download_button(
-                            label="📥 Download as Text",
+                            label="📄 Download as Text",
                             data=letter,
                             file_name=f"{client_name.replace(' ', '_')}_EL.txt",
                             mime="text/plain",
@@ -609,6 +651,17 @@ def main_app():
                         )
 
                     with col2:
+                        pdf_data = generate_pdf(letter, client_name)
+                        if pdf_data:
+                            st.download_button(
+                                label="📕 Download as PDF",
+                                data=pdf_data,
+                                file_name=f"{client_name.replace(' ', '_')}_EL.pdf",
+                                mime="application/pdf",
+                                use_container_width=True
+                            )
+
+                    with col3:
                         if st.button("☁️ Save to GitHub", use_container_width=True, type="primary"):
                             g = get_github_client()
                             if g:
