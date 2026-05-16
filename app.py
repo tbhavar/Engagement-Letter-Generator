@@ -535,7 +535,10 @@ def generate_pdf(letter_content, client_name):
                     pdf.ln(0.5)
 
         # Return PDF as bytes
-        return pdf.output(dest='S')
+        pdf_output = pdf.output(dest='S')
+        if isinstance(pdf_output, bytearray):
+            return bytes(pdf_output)
+        return pdf_output
 
     except Exception as e:
         st.error(f"❌ Error generating PDF: {str(e)}")
