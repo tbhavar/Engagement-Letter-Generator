@@ -472,7 +472,7 @@ def generate_pdf(letter_content, client_name):
         pdf = FPDF(format='A4')
         pdf.set_margins(15, 15, 15)
         pdf.add_page()
-        pdf.set_font("times", size=11)
+        pdf.set_font("DejaVu", size=11)
 
         # Add content line by line
         for line in letter_content.split('\n'):
@@ -481,26 +481,26 @@ def generate_pdf(letter_content, client_name):
             # Handle headings (lines with ##)
             if line.startswith('## '):
                 pdf.ln(4)
-                pdf.set_font("times", "B", 13)
+                pdf.set_font("DejaVu", "B", 13)
                 heading = line.replace('## ', '').strip()
                 # Use multi_cell for safe text wrapping
                 pdf.multi_cell(0, 7, heading)
-                pdf.set_font("times", size=11)
+                pdf.set_font("DejaVu", size=11)
                 pdf.ln(2)
 
             elif line.startswith('### '):
                 pdf.ln(2)
-                pdf.set_font("times", "B", 12)
+                pdf.set_font("DejaVu", "B", 12)
                 subheading = line.replace('### ', '').strip()
                 pdf.multi_cell(0, 6, subheading)
-                pdf.set_font("times", size=11)
+                pdf.set_font("DejaVu", size=11)
                 pdf.ln(1)
 
             elif line.startswith('**') and line.endswith('**'):
-                pdf.set_font("times", "B", 11)
+                pdf.set_font("DejaVu", "B", 11)
                 text = line.replace('**', '').strip()
                 pdf.multi_cell(0, 6, text)
-                pdf.set_font("times", size=11)
+                pdf.set_font("DejaVu", size=11)
                 pdf.ln(1)
 
             elif line.strip() == '---':
