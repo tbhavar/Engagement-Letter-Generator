@@ -469,7 +469,8 @@ def generate_pdf(letter_content, client_name):
         from fpdf import FPDF
 
         # Create PDF with proper margins
-        pdf = FPDF(format='A4', margins=(15, 15, 15, 15))
+        pdf = FPDF(format='A4')
+        pdf.set_margins(15, 15, 15)
         pdf.add_page()
         pdf.set_font("Arial", size=11)
 
